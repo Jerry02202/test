@@ -80,7 +80,7 @@ def check_product_price():
         
         # ----- INICIO DE IMPRESIÓN DEL HTML (SOLO PARA DEPURACIÓN) -----
         # print("\n\n--- INICIO DEL HTML OBTENIDO ---\n")
-        # print(soup.prettify()) # Descomentar esta línea temporalmente si las búsquedas siguen fallando
+         print(soup.prettify()) # Descomentar esta línea temporalmente si las búsquedas siguen fallando
         # print("\n--- FIN DEL HTML OBTENIDO ---\n\n")
         # ----- FIN DE IMPRESIÓN DEL HTML -----
 
