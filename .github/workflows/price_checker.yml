@@ -1,9 +1,10 @@
 name: Comprobador de Precios InkaFarma
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecución manual
   schedule:
-    - cron: '0 8 * * *' # Todos los días a las 08:00 UTC
+    # Se ejecuta todos los días a las 23:00 UTC (que son las 18:00 en UTC-5)
+    - cron: '0 23 * * *'
 
 jobs:
   check_price_job:
@@ -16,12 +17,11 @@ jobs:
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.10' # O la versión que estés usando
 
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          # Añadimos lxml[html_clean] para asegurar que la dependencia de requests-html esté completa
           pip install requests beautifulsoup4 requests-html "lxml[html_clean]"
 
       - name: Ejecutar el script de comprobación de precios
