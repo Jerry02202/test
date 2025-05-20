@@ -1,11 +1,16 @@
-import requests
+import time # Para añadir pausas si es necesario
+from requests_html import HTMLSession # Importamos HTMLSession
 from bs4 import BeautifulSoup
 import re
+import pyppeteer # requests-html puede necesitarlo explícitamente en algunos entornos
 
+# URL del producto a monitorear
 PRODUCT_URL = "https://inkafarma.pe/producto/magnesol-polvo-efervescente-sabor-naranja/009570"
+
+# User-Agent para simular un navegador (requests-html lo maneja, pero podemos dejarlo por si acaso)
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8", # Añadir idioma por si acaso
+    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
     "Accept-Encoding": "gzip, deflate, br",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
 }
@@ -27,15 +32,13 @@ def find_price_elements(soup):
     span_promo_element = soup.find("span", string=lambda text: text and "precio promocional" in text.strip().lower())
 
     if span_regular_element:
-        print(f"DEBUG: Encontrado span para 'Precio regular': {span_regular_element.prettify()}")
+        print(f"DEBUG: Encontrado span para 'Precio regular': {span_regular_element.get_text(strip=True)}")
         parent_col_div_regular = span_regular_element.find_parent(
             lambda tag: tag.name == 'div' and tag.get('class') and any(cls.startswith('col-') for cls in tag.get('class'))
         )
         if parent_col_div_regular:
-            print(f"DEBUG: Encontrado div columna padre para regular: {parent_col_div_regular.prettify(max_depth=2)}") # max_depth para no imprimir demasiado
             price_sibling_div_regular = parent_col_div_regular.find_next_sibling("div", class_="price-amount")
             if price_sibling_div_regular:
-                print(f"DEBUG: Encontrado div de precio para regular: {price_sibling_div_regular.prettify()}")
                 texto_regular_encontrado = price_sibling_div_regular.get_text(strip=True)
                 if "text-strike" in price_sibling_div_regular.get("class", []):
                     regular_esta_tachado = True
@@ -47,15 +50,13 @@ def find_price_elements(soup):
         print("DEBUG: No se encontró el span para 'Precio regular'.")
 
     if span_promo_element:
-        print(f"DEBUG: Encontrado span para 'Precio Promocional': {span_promo_element.prettify()}")
+        print(f"DEBUG: Encontrado span para 'Precio Promocional': {span_promo_element.get_text(strip=True)}")
         parent_col_div_promo = span_promo_element.find_parent(
             lambda tag: tag.name == 'div' and tag.get('class') and any(cls.startswith('col-') for cls in tag.get('class'))
         )
         if parent_col_div_promo:
-            print(f"DEBUG: Encontrado div columna padre para promocional: {parent_col_div_promo.prettify(max_depth=2)}")
             price_sibling_div_promo = parent_col_div_promo.find_next_sibling("div", class_="price-amount")
             if price_sibling_div_promo:
-                print(f"DEBUG: Encontrado div de precio para promocional: {price_sibling_div_promo.prettify()}")
                 if "text-strike" not in price_sibling_div_promo.get("class", []):
                     texto_promocional_encontrado = price_sibling_div_promo.get_text(strip=True)
             else:
@@ -69,19 +70,29 @@ def find_price_elements(soup):
 
 
 def check_product_price():
+    session = HTMLSession() # Creamos una sesión de requests-html
     try:
-        print(f"Intentando acceder a: {PRODUCT_URL}")
-        response = requests.get(PRODUCT_URL, headers=HEADERS, timeout=30)
-        print(f"Status Code de la respuesta: {response.status_code}")
-        response.raise_for_status()
+        print(f"Intentando acceder a: {PRODUCT_URL} con requests-html")
+        response = session.get(PRODUCT_URL, headers=HEADERS, timeout=30) # Obtenemos la página con la sesión
         
-        print("Página obtenida, parseando con BeautifulSoup...")
-        soup = BeautifulSoup(response.content, "html.parser")
+        print(f"Status Code inicial de la respuesta: {response.status_code}")
+        response.raise_for_status() # Verificar si la petición inicial fue exitosa
+
+        print("Página obtenida. Renderizando JavaScript (esto puede tardar)...")
+        # El argumento `timeout` para render es en segundos.
+        # `scrolldown` puede ayudar a cargar elementos lazy-loaded.
+        # `sleep` da tiempo para que se cargue el JS.
+        response.html.render(timeout=40, scrolldown=1, sleep=3)
         
-        # ----- INICIO DE IMPRESIÓN DEL HTML (SOLO PARA DEPURACIÓN) -----
-        print("\n\n--- INICIO DEL HTML OBTENIDO ---\n")
-        print(soup.prettify()) # Descomentar esta línea temporalmente si las búsquedas siguen fallando
-        print("\n--- FIN DEL HTML OBTENIDO ---\n\n")
+        print("JavaScript renderizado. Parseando HTML con BeautifulSoup...")
+        # Usamos el HTML renderizado
+        rendered_html = response.html.html 
+        soup = BeautifulSoup(rendered_html, "html.parser")
+        
+        # ----- OPCIONAL: Descomentar para ver el HTML renderizado (puede ser muy largo) -----
+        # print("\n\n--- INICIO DEL HTML RENDERIZADO ---\n")
+        # print(soup.prettify())
+        # print("\n--- FIN DEL HTML RENDERIZADO ---\n\n")
         # ----- FIN DE IMPRESIÓN DEL HTML -----
 
         texto_regular, texto_promo, regular_tachado = find_price_elements(soup)
@@ -92,7 +103,6 @@ def check_product_price():
         print(f"Texto Promocional Encontrado: '{texto_promo}'")
         print(f"-----------------------------------\n")
 
-        # ... (resto de la lógica de impresión de resultados, igual que antes) ...
         if texto_promo and texto_regular and regular_tachado:
             valor_regular_num = get_price_value(texto_regular)
             valor_promo_num = get_price_value(texto_promo)
@@ -115,13 +125,18 @@ def check_product_price():
             print(f"Se encontró un 'Precio Promocional' ('{texto_promo}') pero no se pudo identificar un 'Precio regular' claro.")
         else:
             print("No se pudo identificar claramente ni 'Precio regular' ni 'Precio Promocional' con la estructura esperada.")
-            print("Verificar el HTML obtenido o la lógica de búsqueda si se esperaba encontrar precios.")
+            print("Verificar la lógica de búsqueda si se esperaba encontrar precios (o descomentar la impresión del HTML renderizado).")
 
-
-    except requests.exceptions.RequestException as e:
+    except pyppeteer.errors.TimeoutError as e: # Específicamente para timeouts de renderizado
+        print(f"Error de Timeout durante el renderizado de JavaScript: {e}")
+        print("La página podría ser demasiado pesada o tener scripts que tardan mucho en cargar.")
+    except requests.exceptions.RequestException as e: # Errores de la librería requests
         print(f"Error al intentar acceder a la página: {e}")
-    except Exception as e:
-        print(f"Ocurrió un error inesperado durante el scraping: {e}")
+    except Exception as e: # Otros errores inesperados
+        print(f"Ocurrió un error inesperado: {e}")
+        print(f"Tipo de error: {type(e)}")
+    finally:
+        session.close() # Cerramos la sesión
 
 if __name__ == "__main__":
     print(f"Iniciando revisión de precio para: {PRODUCT_URL}")
