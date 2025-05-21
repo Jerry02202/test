@@ -11,11 +11,7 @@ jobs:
 
     steps:
       - name: Checkout del código
-        uses: actions/checkout@v4
-        with:
-          # Necesitamos un token que pueda hacer push (el GITHUB_TOKEN por defecto puede)
-          # Si usas un token personal, asegúrate de que tenga permisos de 'contents: write'
-          # token: ${{ secrets.PAT_TOKEN }} # Descomentar si usas un PAT en lugar de GITHUB_TOKEN
+        uses: actions/checkout@v4 # SIN EL 'with:' si no es necesario
 
       - name: Configurar Python
         uses: actions/setup-python@v5
