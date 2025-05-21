@@ -8,6 +8,8 @@ on:
 jobs:
   check_price_job:
     runs-on: ubuntu-latest
+    permissions: # <--- AÑADIR ESTA SECCIÓN
+      contents: write # Permite que el GITHUB_TOKEN escriba en el repositorio (para el commit)
 
     steps:
       - name: Checkout del código
