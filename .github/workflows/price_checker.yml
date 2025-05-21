@@ -3,7 +3,7 @@ name: Comprobador de Precios InkaFarma
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *' # Todos los días a las 22:00 UTC (que son las 17:00 en UTC-5)
+    - cron: '0 22 * * *' # Tu configuración actual (ej. 22:00 UTC)
 
 jobs:
   check_price_job:
@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
+        with:
+          # Necesitamos un token que pueda hacer push (el GITHUB_TOKEN por defecto puede)
+          # Si usas un token personal, asegúrate de que tenga permisos de 'contents: write'
+          # token: ${{ secrets.PAT_TOKEN }} # Descomentar si usas un PAT en lugar de GITHUB_TOKEN
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -30,4 +34,18 @@ jobs:
           RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
-        run: python main.py # <--- CAMBIO AQUÍ
+        run: python main.py
+
+      - name: Auto-commit del archivo de estado (si cambió)
+        uses: stefanzweifel/git-auto-commit-action@v5 # O la última versión
+        with:
+          commit_message: "Estado: Actualizar precios de productos y ofertas"
+          file_pattern: "product_states.json" # Solo hacer commit de este archivo si cambia
+          # Opcional: añadir un autor y email específicos para el commit del bot
+          commit_user_name: "GitHub Actions Bot"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions Bot <actions@github.com>"
+          # Opciones para hacer push:
+          push_options: '--force' # Considerar si es necesario, o gestionar ramas/PRs
+                                  # Por ahora, un push directo a la rama principal es lo más simple
+                                  # para este caso de uso.
