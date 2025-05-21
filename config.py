@@ -15,7 +15,9 @@
 
 PRODUCT_URLS = [
     "https://inkafarma.pe/producto/magnesol-polvo-efervescente-sabor-naranja/009570"
-    # Puedes añadir más URLs aquí en el futuro
+    # Puedes añadir más URLs aquí en el futuro, una por línea, separadas por comas:
+    # "https://inkafarma.pe/OTRO_PRODUCTO_URL",
+    # "https://inkafarma.pe/UN_TERCER_PRODUCTO_URL"
 ]
 
 # Configuración común de Headers para el scraper
