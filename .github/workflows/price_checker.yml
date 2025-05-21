@@ -3,7 +3,7 @@ name: Comprobador de Precios InkaFarma
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 3 * * *' # Todos los días a las 03:45 UTC (que son las 22:45 en UTC-5)
+    - cron: '0 22 * * *' # Todos los días a las 22:00 UTC (que son las 17:00 en UTC-5)
 
 jobs:
   check_price_job:
