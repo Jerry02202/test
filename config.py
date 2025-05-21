@@ -15,7 +15,8 @@
 
 PRODUCT_URLS = [
     "https://inkafarma.pe/producto/magnesol-polvo-efervescente-sabor-naranja/009570",
-    "https://inkafarma.pe/producto/desodorante-barra-invisible-secret-powder-cotton/071306"
+    "https://inkafarma.pe/producto/desodorante-barra-invisible-secret-powder-cotton/071306",
+    "https://inkafarma.pe/producto/shampoo-vichy-dercos-anticaspa-para-cabello-graso/067310"
     # Puedes añadir más URLs aquí en el futuro, una por línea, separadas por comas:
     # "https://inkafarma.pe/OTRO_PRODUCTO_URL",
     # "https://inkafarma.pe/UN_TERCER_PRODUCTO_URL"
