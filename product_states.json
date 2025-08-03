@@ -1,8 +1,8 @@
 {
     "https://inkafarma.pe/producto/magnesol-polvo-efervescente-sabor-naranja/009570": {
-        "last_notified_type": "Precio Promocional",
-        "last_notified_price": 30.2,
-        "last_checked_timestamp": "2025-07-31T22:21:42.927084"
+        "last_notified_type": "Precio regular",
+        "last_notified_price": null,
+        "last_checked_timestamp": "2025-08-03T22:20:59.454223"
     },
     "https://inkafarma.pe/producto/shampoo-vichy-dercos-anticaspa-para-cabello-graso/067310": {
         "last_notified_type": "Precio regular",
@@ -10,8 +10,8 @@
         "last_checked_timestamp": "2025-07-21T22:22:09.113852"
     },
     "https://inkafarma.pe/producto/desodorante-barra-invisible-secret-powder-cotton/071306": {
-        "last_notified_type": "Exclusivo oh! y oh! pay",
-        "last_notified_price": 12.9,
-        "last_checked_timestamp": "2025-08-01T22:21:32.155824"
+        "last_notified_type": "Precio regular",
+        "last_notified_price": null,
+        "last_checked_timestamp": "2025-08-03T22:21:11.700085"
     }
 }
