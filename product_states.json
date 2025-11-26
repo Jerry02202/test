@@ -15,18 +15,18 @@
         "last_checked_timestamp": "2025-10-01T22:18:50.886263"
     },
     "https://inkafarma.pe/producto/desodorante-gel-invisible-secret-powder-cotton/071389": {
-        "last_notified_type": "Precio Promocional",
-        "last_notified_price": 14.9,
-        "last_checked_timestamp": "2025-11-03T22:20:05.490123"
+        "last_notified_type": "Precio regular",
+        "last_notified_price": null,
+        "last_checked_timestamp": "2025-11-26T22:19:55.967275"
     },
     "https://inkafarma.pe/producto/vitamin-d-1000-iu-tableta/005569": {
-        "last_notified_type": "Precio Promocional",
-        "last_notified_price": 42.3,
-        "last_checked_timestamp": "2025-11-24T22:20:37.014325"
+        "last_notified_type": "Precio regular",
+        "last_notified_price": null,
+        "last_checked_timestamp": "2025-11-26T22:20:30.493768"
     },
     "https://inkafarma.pe/producto/vivactiv-complejob-efervescente/028971": {
-        "last_notified_type": "Precio regular",
-        "last_notified_price": 17.9,
-        "last_checked_timestamp": "2025-11-24T22:21:00.574702"
+        "last_notified_type": "Precio Promocional",
+        "last_notified_price": 12.5,
+        "last_checked_timestamp": "2025-11-26T22:20:55.200855"
     }
 }
