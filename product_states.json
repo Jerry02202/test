@@ -16,13 +16,13 @@
     },
     "https://inkafarma.pe/producto/desodorante-gel-invisible-secret-powder-cotton/071389": {
         "last_notified_type": "Precio Promocional",
-        "last_notified_price": 13.9,
-        "last_checked_timestamp": "2026-04-27T22:54:20.256816"
+        "last_notified_price": 16.0,
+        "last_checked_timestamp": "2026-04-28T22:57:15.109362"
     },
     "https://inkafarma.pe/producto/vitamin-d-1000-iu-tableta/005569": {
-        "last_notified_type": "Precio regular",
-        "last_notified_price": null,
-        "last_checked_timestamp": "2026-04-27T22:54:55.779172"
+        "last_notified_type": "Precio Promocional",
+        "last_notified_price": 45.8,
+        "last_checked_timestamp": "2026-04-28T22:57:52.624115"
     },
     "https://inkafarma.pe/producto/vivactiv-complejob-efervescente/028971": {
         "last_notified_type": "Precio Promocional",
@@ -35,8 +35,8 @@
         "last_checked_timestamp": "2026-04-27T22:54:44.174439"
     },
     "https://inkafarma.pe/producto/shampoo-tio-nacho-anti-caida-herbolaria-1000-ml/031341": {
-        "last_notified_type": "Precio Promocional",
-        "last_notified_price": 36.1,
-        "last_checked_timestamp": "2026-04-27T22:55:08.598984"
+        "last_notified_type": "Precio regular",
+        "last_notified_price": 39.9,
+        "last_checked_timestamp": "2026-04-28T22:58:04.516932"
     }
 }
